@@ -1,0 +1,32 @@
+services:
+  mock-upstream-unguarded:
+    build: ./mock-upstream
+    environment:
+      MOCK_PORT: "8090"
+
+  mock-upstream-guarded:
+    build: ./mock-upstream
+    environment:
+      MOCK_PORT: "8090"
+
+  agentgateway-unguarded:
+    image: cr.agentgateway.dev/agentgateway:v1.6.0
+    depends_on:
+      - mock-upstream-unguarded
+    command: ["-f", "/config/unguarded.yaml"]
+    volumes:
+      - ./config/unguarded.yaml:/config/unguarded.yaml:ro
+    ports:
+      - "13300:3000"
+      - "13500:15000"
+
+  agentgateway-guarded:
+    image: cr.agentgateway.dev/agentgateway:v1.6.0
+    depends_on:
+      - mock-upstream-guarded
+    command: ["-f", "/config/guarded.yaml"]
+    volumes:
+      - ./config/guarded.yaml:/config/guarded.yaml:ro
+    ports:
+      - "13301:3000"
+      - "13501:15000"

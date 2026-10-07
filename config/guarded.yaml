@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+#
+# Same backend, same route. The only difference from unguarded.yaml is the
+# localRateLimit policy: 20 requests, refilling at 5/second (100 req/s steady
+# state after the initial burst drains). This is a per-destination egress
+# budget, not an LLM token budget -- it applies to any HTTP backend an agent
+# talks to, including a public third-party API it was never told to go easy on.
+config:
+  adminAddr: 0.0.0.0:15000
+binds:
+- port: 3000
+  listeners:
+  - protocol: HTTP
+    routes:
+    - policies:
+        localRateLimit:
+        - maxTokens: 20
+          tokensPerFill: 5
+          fillInterval: 1s
+          type: requests
+      backends:
+      - host: mock-upstream-guarded:8090

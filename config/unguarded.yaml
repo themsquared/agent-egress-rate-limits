@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+#
+# Baseline: agentgateway proxies to the mock third-party API with no traffic
+# policy at all. Every request the agent sends reaches the upstream.
+config:
+  adminAddr: 0.0.0.0:15000
+binds:
+- port: 3000
+  listeners:
+  - protocol: HTTP
+    routes:
+    - backends:
+      - host: mock-upstream-unguarded:8090
