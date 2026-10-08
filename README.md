@@ -1,5 +1,7 @@
 # agent-egress-rate-limits
 
+> 📖 **Read the write-up:** [Rate-Limiting AI Agent Egress to Already-Allowed APIs](https://webofmike.com/agent-egress-rate-limits/)
+
 A runnable demo of [agentgateway](https://agentgateway.dev)'s `localRateLimit` policy applied to **ordinary outbound HTTP traffic to a third-party API** — not an LLM provider, not a blocked destination, just a public service an agent is allowed to talk to.
 
 ## The problem this maps to
